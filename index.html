@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#6a4cff">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sales Register</title>
+<style>
+:root{--bg:#f3f1ff;--surface:#ffffff;--ink:#1c1840;--mute:#6b6990;--line:#e4e0f7;--field:#f7f5ff;--p:#6a4cff;--p2:#9b6bff;--mint:#10c29b;--coral:#ff5c7a;--sky:#2eb6ff;--money:#0a8f72;--warn:#b25e00;--bad:#d3264a;--ok:#0a8f72;--shadow:0 8px 22px rgba(90,70,220,.10);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#120f2b;--surface:#1c1842;--ink:#efecff;--mute:#a29fc9;--line:#2e2a5e;--field:#241f52;--money:#3fe0b9;--warn:#ffb55c;--bad:#ff8aa3;--ok:#3fe0b9;--shadow:none}}
+:root[data-theme="dark"]{--bg:#120f2b;--surface:#1c1842;--ink:#efecff;--mute:#a29fc9;--line:#2e2a5e;--field:#241f52;--money:#3fe0b9;--warn:#ffb55c;--bad:#ff8aa3;--ok:#3fe0b9;--shadow:none}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:96px}
+header{padding:12px 14px 0;max-width:560px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#5b3df5 0%,#9b5cff 58%,#ff6fb1 100%);border-radius:26px;padding:18px 16px 16px;color:#fff;box-shadow:0 14px 30px rgba(106,76,255,.35)}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.22);display:grid;place-items:center}
+h1{font-size:21px;margin:0;font-weight:800;letter-spacing:-.02em}
+.tag{font-size:13px;opacity:.88}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:8px;margin-top:16px}
+.tile{background:rgba(255,255,255,.2);border-radius:16px;padding:10px 10px 9px;min-width:0}
+.tile b{display:block;font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile.t3 b{font-size:17px;line-height:1.55}
+.tile span{font-size:12px;opacity:.9}
+main{padding:14px 14px 16px;max-width:560px;margin:0 auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.sec{font-weight:800;font-size:16px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sec::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--dot,var(--p))}
+.c1{--dot:var(--p)}.c2{--dot:var(--mint)}.c3{--dot:var(--coral)}
+label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:12px 0 5px}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:14px;padding:13px}
+input:focus,textarea:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(106,76,255,.22)}
+button{font:inherit;font-weight:700;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--field);color:var(--ink);cursor:pointer}
+button:focus-visible{outline:3px solid var(--p);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:stretch}
+.row input{flex:1;min-width:0}
+.imei{font-variant-numeric:tabular-nums;letter-spacing:.06em;font-size:18px}
+button.scan{border:0;color:#fff;white-space:nowrap;background:linear-gradient(135deg,var(--sky),var(--p))}
+button.main{border:0;width:100%;margin-top:16px;padding:16px;font-size:17px;color:#fff;border-radius:18px;background:linear-gradient(135deg,var(--p),#ff5ca8);box-shadow:0 10px 22px rgba(106,76,255,.35)}
+button.bad{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+.hint{font-size:13px;margin-top:5px;min-height:18px;color:var(--mute)}
+.hint.ok{color:var(--ok)}.hint.warn{color:var(--warn)}.hint.err{color:var(--bad)}
+.item{display:grid;grid-template-columns:46px 1fr;gap:0 12px;align-items:center;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.av{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:19px}
+.item .top{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.pr{color:var(--money);font-variant-numeric:tabular-nums;white-space:nowrap}
+.item .sub{color:var(--mute);font-size:13px;font-variant-numeric:tabular-nums}
+.detail{display:none;grid-column:1/-1;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:14px}
+.item.open .detail{display:block}
+.detail p{margin:4px 0}
+.empty{text-align:center;color:var(--mute);padding:34px 12px;background:var(--surface);border:1.5px dashed var(--line);border-radius:22px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;background:var(--surface);border-radius:24px 24px 0 0;box-shadow:0 -8px 24px rgba(90,70,220,.16);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));z-index:20}
+nav button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:0;color:var(--mute);padding:13px 10px;border-radius:16px}
+nav button.on{color:#fff;background:linear-gradient(135deg,var(--p),var(--p2))}
+nav svg{width:20px;height:20px}
+#toast{position:fixed;left:16px;right:16px;bottom:104px;background:var(--ink);color:var(--bg);padding:13px 14px;border-radius:14px;display:none;z-index:30;text-align:center;font-weight:600}
+#cam{position:fixed;inset:0;background:#000;z-index:50;display:none;flex-direction:column}
+#cam video{flex:1;width:100%;object-fit:cover;min-height:0}
+#cam .bar{padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:#000;color:#fff;text-align:center}
+#cam button{margin-top:10px;width:100%}
+.view{display:none}.view.on{display:block}
+textarea{min-height:90px;font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="hero"><div class="brand"><span class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M9.5 8v5M12 8v5M14.5 8v5M10 18h4"/></svg></span><div><h1>Sales Register</h1><div class="tag">Used phones, IMEI tracked</div></div></div><div class="tiles"><div class="tile"><b id="sTotal">0</b><span>Total sold</span></div><div class="tile"><b id="sMonth">0</b><span>This month</span></div><div class="tile t3"><b id="sProfit">Rs 0</b><span>Month profit</span></div></div></div></header>
+<main>
+  <section id="vAdd" class="view on">
+    <div class="card c1"><div class="sec">Phone</div>
+      <label for="imei1">IMEI 1</label>
+      <div class="row"><input id="imei1" class="imei" inputmode="numeric" maxlength="15" placeholder="15 digits" autocomplete="off"><button class="scan" data-scan="imei1" type="button">Scan</button></div>
+      <div class="hint" id="h1"></div>
+      <label for="imei2">IMEI 2 (optional)</label>
+      <div class="row"><input id="imei2" class="imei" inputmode="numeric" maxlength="15" placeholder="15 digits" autocomplete="off"><button class="scan" data-scan="imei2" type="button">Scan</button></div>
+      <div class="hint" id="h2"></div>
+      <label for="model">Model</label>
+      <input id="model" placeholder="e.g. Samsung A54, iPhone 13" autocomplete="off">
+      </div><div class="card c2"><div class="sec">Price</div><label for="price">Sale price (Rs)</label>
+      <input id="price" inputmode="numeric" placeholder="e.g. 85000">
+      <label for="buy">Buying price (Rs), profit ke liye</label>
+      <input id="buy" inputmode="numeric" placeholder="e.g. 70000">
+      </div><div class="card c3"><div class="sec">Customer and notes</div><label for="cust">Customer name</label>
+      <input id="cust" autocomplete="off">
+      <label for="phone">Customer phone</label>
+      <input id="phone" inputmode="tel" placeholder="03xx xxxxxxx">
+      <label for="date">Date</label>
+      <input id="date" type="date">
+      <label for="notes">Notes (warranty, accessories)</label>
+      <input id="notes" autocomplete="off">
+      <button class="main" id="save" type="button">Save sale</button>
+    </div>
+  </section>
+  <section id="vList" class="view">
+    <input id="q" placeholder="Search IMEI, model, customer, phone" style="margin-bottom:10px">
+    <div id="list"></div>
+    <div class="card" style="margin-top:16px">
+      <label for="shop">Shop ka naam (slip par likha jayega)</label><input id="shop" placeholder="Shop name" autocomplete="off" style="margin-bottom:14px"><b>Backup</b>
+      <div class="hint">Backup banao, text copy karke WhatsApp ya Notes mein save kar lein. Phone change ho to yahan paste karke restore karein.</div>
+      <textarea id="bk" placeholder="Backup text yahan aayega"></textarea>
+      <div class="row" style="margin-top:8px"><button id="bkMake" type="button">Make backup</button><button id="bkRestore" type="button">Restore</button></div>
+    </div>
+  </section>
+</main>
+<nav>
+  <button id="tAdd" class="on" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add sale</button>
+  <button id="tList" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>Records</button>
+</nav>
+<div id="toast"></div>
+<div id="cam"><video id="vid" playsinline muted></video><div class="bar"><div id="camMsg">IMEI barcode ko frame mein rakhein</div><button id="camClose" type="button">Close camera</button></div></div>
+<script>
+(function(){
+var KEY="sales_v1", recs=[], $=function(i){return document.getElementById(i)};
+try{recs=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){recs=[]}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(recs));return true}catch(e){toast("Save nahi hua, backup bana lein");return false}}
+function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.display="none"},2800)}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function luhn(s){var sum=0;for(var i=0;i<15;i++){var d=+s[14-i];if(i%2==1){d*=2;if(d>9)d-=9}sum+=d}return sum%10==0}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function find(imei){return recs.filter(function(r){return r.imei1===imei||r.imei2===imei})[0]}
+function check(id,hid){var v=$(id).value.replace(/\D/g,"");$(id).value=v;var h=$(hid);h.className="hint";
+ if(!v){h.textContent="";return}
+ if(v.length<15){h.textContent=v.length+" / 15 digits";return}
+ var dup=find(v);
+ if(dup){h.className="hint err";h.textContent="Ye IMEI pehle sold hai: "+dup.model+", "+dup.date;return}
+ if(!luhn(v)){h.className="hint warn";h.textContent="15 digits, lekin IMEI check match nahi hua. Dobara dekh lein.";return}
+ h.className="hint ok";h.textContent="IMEI sahi lag raha hai"}
+$("imei1").oninput=function(){check("imei1","h1")};$("imei2").oninput=function(){check("imei2","h2")};
+$("date").value=today();
+try{$("shop").value=localStorage.getItem("shop_name")||""}catch(e){}
+$("shop").oninput=function(){try{localStorage.setItem("shop_name",$("shop").value)}catch(e){}};
+function show(v){$("vAdd").classList.toggle("on",v==="add");$("vList").classList.toggle("on",v==="list");$("tAdd").classList.toggle("on",v==="add");$("tList").classList.toggle("on",v==="list");if(v==="list")render();window.scrollTo(0,0)}
+$("tAdd").onclick=function(){show("add")};$("tList").onclick=function(){show("list")};
+$("save").onclick=function(){
+ var a=$("imei1").value.replace(/\D/g,""),b=$("imei2").value.replace(/\D/g,""),m=$("model").value.trim();
+ if(a.length!==15){toast("IMEI 1 poora 15 digits ka hona chahiye");return}
+ if(b&&b.length!==15){toast("IMEI 2 15 digits ka ho ya khali chhor dein");return}
+ if(!m){toast("Model likhein");return}
+ var d=find(a)||(b&&find(b));if(d){toast("Ye IMEI pehle save hai: "+d.model);return}
+ recs.unshift({id:Date.now().toString(36),imei1:a,imei2:b,model:m,price:$("price").value.replace(/\D/g,""),buy:$("buy").value.replace(/\D/g,""),cust:$("cust").value.trim(),phone:$("phone").value.trim(),date:$("date").value||today(),notes:$("notes").value.trim()});
+ if(!persist())return;
+ ["imei1","imei2","model","price","buy","cust","phone","notes"].forEach(function(i){$(i).value=""});$("h1").textContent="";$("h2").textContent="";$("date").value=today();
+ stats();toast("Sale save ho gayi");window.scrollTo(0,0)};
+function stats(){$("sTotal").textContent=recs.length;var ym=today().slice(0,7);var mr=recs.filter(function(r){return(r.date||"").slice(0,7)===ym});$("sMonth").textContent=mr.length;var p=0;mr.forEach(function(r){if(r.buy&&r.price)p+=r.price-r.buy});$("sProfit").textContent="Rs "+p.toLocaleString("en-PK")}
+function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+function render(){var q=$("q").value.trim().toLowerCase(),L=$("list");
+ var rows=recs.filter(function(r){return!q||[r.imei1,r.imei2,r.model,r.cust,r.phone].join(" ").toLowerCase().indexOf(q)>-1});
+ if(!rows.length){L.innerHTML='<div class="empty">'+(recs.length?"Koi record nahi mila":"Abhi koi sale save nahi hui. Add sale tab se shuru karein.")+"</div>";return}
+ L.innerHTML=rows.map(function(r){return'<div class="card item" data-id="'+r.id+'"><div class="av" style="background:hsl('+hue(r.model)+' 65% 48%)">'+esc(r.model.charAt(0).toUpperCase())+'</div><div class="mid"><div class="top"><span>'+esc(r.model)+'</span><span class="pr">'+(r.price?"Rs "+Number(r.price).toLocaleString("en-PK"):"")+'</span></div><div class="sub">'+esc(r.imei1)+" · "+esc(r.date)+'</div></div><div class="detail">'+(r.imei2?"<p>IMEI 2: "+esc(r.imei2)+"</p>":"")+(r.buy&&r.price?"<p>Profit: Rs "+(r.price-r.buy).toLocaleString("en-PK")+"</p>":"")+(r.cust?"<p>Customer: "+esc(r.cust)+"</p>":"")+(r.phone?"<p>Phone: "+esc(r.phone)+"</p>":"")+(r.notes?"<p>Notes: "+esc(r.notes)+"</p>":"")+'<button class="slip" data-id="'+r.id+'" type="button" style="margin:8px 8px 0 0">Share slip</button><button class="bad del" data-id="'+r.id+'" type="button" style="margin-top:8px">Delete</button></div></div>'}).join("")}
+$("q").oninput=render;
+$("list").onclick=function(e){var sl=e.target.closest(".slip");if(sl){slip(sl.dataset.id);return}var del=e.target.closest(".del");
+ if(del){if(del.dataset.arm){recs=recs.filter(function(r){return r.id!==del.dataset.id});persist();stats();render();toast("Delete ho gaya")}else{del.dataset.arm="1";del.textContent="Dobara tap karein, pakka delete"}return}
+ var it=e.target.closest(".item");if(it)it.classList.toggle("open")};
+$("bkMake").onclick=function(){var t=JSON.stringify(recs);$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Backup copy ho gaya":"Text select hai, long-press karke copy karein")};
+$("bkRestore").onclick=function(){try{var inc=JSON.parse($("bk").value);if(!Array.isArray(inc))throw 0;var n=0;inc.forEach(function(r){if(r&&r.imei1&&!find(r.imei1)){recs.push(r);n++}});recs.sort(function(x,y){return(y.date||"").localeCompare(x.date||"")});persist();stats();render();toast(n+" records restore hue")}catch(e){toast("Backup text sahi nahi hai")}};
+function slip(id){var r=recs.filter(function(x){return x.id===id})[0];if(!r)return;var shop=$("shop").value.trim()||"Sale slip";
+ var t=shop+"\nDate: "+r.date+"\nModel: "+r.model+"\nIMEI: "+r.imei1+(r.imei2?"\nIMEI 2: "+r.imei2:"")+(r.price?"\nPrice: Rs "+Number(r.price).toLocaleString("en-PK"):"")+(r.cust?"\nCustomer: "+r.cust:"")+(r.notes?"\nWarranty/Notes: "+r.notes:"")+"\nShukriya!";
+ if(navigator.share){navigator.share({text:t}).catch(function(){})}else{$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Slip copy ho gayi, WhatsApp mein paste karein":"Slip neeche text box mein hai, copy kar lein")}}
+/* scanner */
+var stream=null,timer=null,target=null;
+function stopCam(){clearInterval(timer);if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}$("cam").style.display="none"}
+$("camClose").onclick=stopCam;
+document.querySelectorAll("[data-scan]").forEach(function(b){b.onclick=function(){openCam(b.dataset.scan)}});
+function openCam(id){target=id;
+ if(!("BarcodeDetector" in window)||!navigator.mediaDevices){toast("Is browser mein scanner nahi hai. Chrome use karein ya IMEI type karein");$(id).focus();return}
+ navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}}).then(function(s){
+  stream=s;var v=$("vid");v.srcObject=s;v.play();$("cam").style.display="flex";
+  var det;try{det=new BarcodeDetector({formats:["code_128","code_39","ean_13","itf","qr_code"]})}catch(e){det=new BarcodeDetector()}
+  timer=setInterval(function(){det.detect(v).then(function(c){for(var i=0;i<c.length;i++){var n=c[i].rawValue.replace(/\D/g,"");if(n.length===15){$(target).value=n;check(target,target==="imei1"?"h1":"h2");if(navigator.vibrate)navigator.vibrate(80);stopCam();return}}}).catch(function(){})},250)
+ }).catch(function(){toast("Camera allow nahi hua. IMEI type kar dein, ya page ko seedha Chrome mein kholen");$(id).focus()})}
+stats();
+})();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}</script>
+</body>
+</html>
