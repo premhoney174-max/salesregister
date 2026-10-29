@@ -95,6 +95,8 @@ nav button{padding:12px 4px;font-size:14px;gap:6px}
 .acard{width:100%;max-width:420px}
 #rcpt{display:none}
 @media print{body>*:not(#rcpt){display:none!important}body{background:#fff!important;padding:0!important}#rcpt{display:block!important;color:#000;background:#fff;font:14px/1.6 system-ui,sans-serif;max-width:360px;margin:0 auto}#rcpt h2{text-align:center;margin:0 0 4px}.ra{text-align:center}.rr{display:flex;justify-content:space-between;gap:12px}#rcpt hr{border:0;border-top:1px dashed #000}@page{margin:8mm}}
+.pwrap{position:relative}.pwrap input{padding-right:54px}.pwrap button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:42px;height:42px;padding:0;background:transparent;border:0;color:var(--mute);display:grid;place-items:center}.pwrap svg{width:22px;height:22px}
+.pager{display:flex;align-items:center;gap:8px;padding:10px}.pager button{width:44px;height:44px;font-size:26px;line-height:1;padding:0;flex:none}.pager button:disabled{opacity:.35}.mt{flex:1;text-align:center;min-width:0}.mt b{display:block;font-size:17px}.mt span{display:block;font-size:12.5px;color:var(--mute)}.sl{animation:inR .22s ease-out}.sr{animation:inL .22s ease-out}@keyframes inR{from{opacity:0;transform:translateX(28px)}}@keyframes inL{from{opacity:0;transform:translateX(-28px)}}@media (prefers-reduced-motion:reduce){.sl,.sr{animation:none}}
 </style>
 </head>
 <body>
@@ -114,7 +116,7 @@ nav button{padding:12px 4px;font-size:14px;gap:6px}
       <div class="row" style="align-items:center"><button type="button" id="photoBtn">Add photo</button><img id="pv" class="pv" alt="Selected phone photo" style="display:none"><button type="button" id="photoX" style="display:none">Remove</button></div><input id="photoIn" type="file" accept="image/*" hidden>
       </div><div class="card c2"><div class="sec">Price</div><label for="price">Sale price (Rs)</label>
       <input id="price" inputmode="numeric" placeholder="e.g. 85000">
-      <label for="buy">Buying price (Rs), profit ke liye</label>
+      <label for="buy">Buying price (Rs), used for profit</label>
       <input id="buy" inputmode="numeric" placeholder="e.g. 70000">
       </div><div class="card c3"><div class="sec">Customer and notes</div><label for="cust">Customer name</label>
       <input id="cust" autocomplete="off">
@@ -128,24 +130,26 @@ nav button{padding:12px 4px;font-size:14px;gap:6px}
     </div>
   </section>
   <section id="vList" class="view">
+    <div class="card pager"><button id="mPrev" type="button" aria-label="Previous month">‹</button><div class="mt"><b id="mTitle"></b><span id="mSum"></span></div><button id="mNext" type="button" aria-label="Next month">›</button></div>
     <input id="q" placeholder="Search IMEI, model, customer, phone" style="margin-bottom:10px">
     <div id="list"></div>
     </section>
 <section id="vSet" class="view">
     <div class="card c1"><div class="sec">Theme</div>
       <div class="seg"><button data-theme-set="auto" type="button">Auto</button><button data-theme-set="light" type="button">Light</button><button data-theme-set="dark" type="button">Dark</button></div>
-      <label>App ka rang</label>
+      <label>Accent color</label>
       <div class="sw"><button data-acc="violet" aria-label="Violet" type="button" style="background:linear-gradient(135deg,#5b3df5,#ff6fb1)"></button><button data-acc="teal" aria-label="Teal" type="button" style="background:linear-gradient(135deg,#0b7a8f,#7ddc8a)"></button><button data-acc="orange" aria-label="Orange" type="button" style="background:linear-gradient(135deg,#d9480f,#ffd166)"></button><button data-acc="pink" aria-label="Pink" type="button" style="background:linear-gradient(135deg,#c2255c,#ffa8a8)"></button><button data-acc="blue" aria-label="Blue" type="button" style="background:linear-gradient(135deg,#1864ab,#74c0fc)"></button></div>
     </div>
-    <div class="card c2"><div class="sec">Shop</div><label for="shop">Shop ka naam</label><input id="shop" placeholder="e.g. STAR Mobiles" autocomplete="off"><label for="addr">Address</label><input id="addr" placeholder="Shop ka address" autocomplete="off"><label for="sphone">Shop phone</label><input id="sphone" inputmode="tel" placeholder="03xx xxxxxxx"></div>
+    <div class="card c3"><div class="sec">Language</div><div class="seg"><button data-lang="en" type="button">English</button><button data-lang="ru" type="button">Roman Urdu</button></div></div>
+    <div class="card c2"><div class="sec">Shop</div><label for="shop">Shop name</label><input id="shop" placeholder="e.g. STAR Mobiles" autocomplete="off"><label for="addr">Address</label><input id="addr" placeholder="Shop address" autocomplete="off"><label for="sphone">Shop phone</label><input id="sphone" inputmode="tel" placeholder="03xx xxxxxxx"></div>
     <div class="card" >
       <b>Backup</b>
-      <div class="hint">Backup banao, text copy karke WhatsApp ya Notes mein save kar lein. Phone change ho to yahan paste karke restore karein.</div>
-      <textarea id="bk" placeholder="Backup text yahan aayega"></textarea>
+      <div class="hint">Make a backup, copy the text and save it in WhatsApp or Notes. On a new phone, paste it here and tap Restore.</div>
+      <textarea id="bk" placeholder="Backup text appears here"></textarea>
       <div class="row" style="margin-top:8px"><button id="bkMake" type="button">Make backup</button><button id="bkRestore" type="button">Restore</button></div>
     </div>
-    <div class="card c3"><div class="sec">Account</div><div class="hint" id="acc">Bina login (sirf is phone mein)</div><button id="bOut" type="button" style="margin-top:8px">Login karein</button></div>
-    <div class="card c1" id="legCard" style="display:none"><div class="sec">Purana data</div><div class="hint" id="legMsg"></div><button class="main" id="bLeg" type="button">Is account mein upload karein</button></div>
+    <div class="card c3"><div class="sec">Account</div><div class="hint" id="acc">Without account (this phone only)</div><button id="bOut" type="button" style="margin-top:8px">Sign in</button></div>
+    <div class="card c1" id="legCard" style="display:none"><div class="sec">Old data</div><div class="hint" id="legMsg"></div><button class="main" id="bLeg" type="button">Upload to this account</button></div>
   </section>
 </main>
 <nav>
@@ -154,20 +158,20 @@ nav button{padding:12px 4px;font-size:14px;gap:6px}
   <button id="tSet" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Settings</button>
 </nav>
 <div id="rcpt"></div>
-<div id="auth"><div class="acard"><div class="hero"><div class="brand"><span class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M9.5 8v5M12 8v5M14.5 8v5M10 18h4"/></svg></span><div><h1>Sales Register</h1><div class="tag">Apni shop ka hisaab, har phone par</div></div></div></div>
-<div class="card" style="margin-top:14px"><div class="hint" id="amsg">Connect ho raha hai...</div>
+<div id="auth"><div class="acard"><div class="hero"><div class="brand"><span class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M9.5 8v5M12 8v5M14.5 8v5M10 18h4"/></svg></span><div><h1>Sales Register</h1><div class="tag">Your shop’s sales, on any phone</div></div></div></div>
+<div class="card" style="margin-top:14px"><div class="hint" id="amsg">Connecting...</div>
 <label for="em">Email (Gmail)</label><input id="em" type="email" inputmode="email" autocomplete="username">
-<label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password">
+<label for="pw">Password</label><div class="pwrap"><input id="pw" type="password" autocomplete="current-password"><button id="pwEye" type="button" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12s4-7 10.5-7 10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
 <button class="main" id="bLogin" type="button">Login</button>
-<div class="row" style="margin-top:10px"><button id="bSign" type="button" style="flex:1">Naya account</button><button id="bReset" type="button" style="flex:1">Password bhool gaye</button></div>
-<button id="bLocal" type="button" style="width:100%;margin-top:12px;background:transparent;border:0;color:var(--mute)">Bina login (sirf is phone mein)</button></div></div></div>
+<div class="row" style="margin-top:10px"><button id="bSign" type="button" style="flex:1">Create account</button><button id="bReset" type="button" style="flex:1">Forgot password</button></div>
+<button id="bLocal" type="button" style="width:100%;margin-top:12px;background:transparent;border:0;color:var(--mute)">Without account (this phone only)</button></div></div></div>
 <div id="toast"></div>
-<div id="cam"><video id="vid" playsinline muted></video><div id="frame"><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i><div class="beam"></div></div><div class="ctop"><span>IMEI scan</span><button id="torch" type="button" style="display:none">Torch on</button></div><div class="bar"><div id="camMsg">Barcode ko dibbe ke andar rakhein</div><div class="tips">Phone 10 se 15 cm door rakhein. Barcode seedha aur saaf ho, roshni kam ho to Torch on karein.</div><div class="row"><button id="camType" type="button">Type karein</button><button id="camClose" type="button">Band karein</button></div></div></div>
+<div id="cam"><video id="vid" playsinline muted></video><div id="frame"><i class="cn tl"></i><i class="cn tr"></i><i class="cn bl"></i><i class="cn br"></i><div class="beam"></div></div><div class="ctop"><span>IMEI scan</span><button id="torch" type="button" style="display:none">Torch on</button></div><div class="bar"><div id="camMsg">Keep the barcode inside the box</div><div class="tips">Hold the phone 10 to 15 cm away. Keep the barcode straight and sharp. Use the torch in low light.</div><div class="row"><button id="camType" type="button">Type it</button><button id="camClose" type="button">Close</button></div></div></div>
 <script>
 (function(){
 var KEY="sales_v1", recs=[], $=function(i){return document.getElementById(i)};
 try{recs=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){recs=[]}
-function persist(){if(CLOUD)return true;try{localStorage.setItem(KEY,JSON.stringify(recs));return true}catch(e){toast("Save nahi hua, backup bana lein");return false}}
+function persist(){if(CLOUD)return true;try{localStorage.setItem(KEY,JSON.stringify(recs));return true}catch(e){toast("Could not save. Please make a backup");return false}}
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.display="none"},2800)}
 function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function luhn(s){var sum=0;for(var i=0;i<15;i++){var d=+s[14-i];if(i%2==1){d*=2;if(d>9)d-=9}sum+=d}return sum%10==0}
@@ -177,9 +181,9 @@ function check(id,hid){var v=$(id).value.replace(/\D/g,"");$(id).value=v;var h=$
  if(!v){h.textContent="";return}
  if(v.length<15){h.textContent=v.length+" / 15 digits";return}
  var dup=find(v);
- if(dup){h.className="hint err";h.textContent="Ye IMEI pehle sold hai: "+dup.model+", "+dup.date;return}
- if(!luhn(v)){h.className="hint warn";h.textContent="15 digits, lekin IMEI check match nahi hua. Dobara dekh lein.";return}
- h.className="hint ok";h.textContent="IMEI sahi lag raha hai"}
+ if(dup){h.className="hint err";h.textContent="This IMEI is already sold: "+dup.model+", "+dup.date;return}
+ if(!luhn(v)){h.className="hint warn";h.textContent="15 digits, but the IMEI check failed. Please double-check.";return}
+ h.className="hint ok";h.textContent="IMEI looks valid"}
 $("imei1").oninput=function(){check("imei1","h1")};$("imei2").oninput=function(){check("imei2","h2")};
 $("date").value=today();
 
@@ -187,29 +191,30 @@ function show(v){$("vAdd").classList.toggle("on",v==="add");$("vList").classList
 $("tAdd").onclick=function(){show("add")};$("tList").onclick=function(){show("list")};$("tSet").onclick=function(){show("set")};
 $("save").onclick=function(){
  var a=$("imei1").value.replace(/\D/g,""),b=$("imei2").value.replace(/\D/g,""),m=$("model").value.trim();
- if(a.length!==15){toast("IMEI 1 poora 15 digits ka hona chahiye");return}
- if(b&&b.length!==15){toast("IMEI 2 15 digits ka ho ya khali chhor dein");return}
- if(!m){toast("Model likhein");return}
- var d=find(a)||(b&&find(b));if(d){toast("Ye IMEI pehle save hai: "+d.model);return}
+ if(a.length!==15){toast("IMEI 1 must be 15 digits");return}
+ if(b&&b.length!==15){toast("IMEI 2 must be 15 digits or empty");return}
+ if(!m){toast("Enter the model");return}
+ var d=find(a)||(b&&find(b));if(d){toast("This IMEI is already saved: "+d.model);return}
  recs.unshift({ts:Date.now(),id:Date.now().toString(36),imei1:a,imei2:b,model:m,price:$("price").value.replace(/\D/g,""),buy:$("buy").value.replace(/\D/g,""),cust:$("cust").value.trim(),phone:$("phone").value.trim(),date:$("date").value||today(),notes:$("notes").value.trim(),photo:curPhoto?1:0});
  if(!persist())return;
  ["imei1","imei2","model","price","buy","cust","phone","notes"].forEach(function(i){$(i).value=""});cSet(recs[0]);savePhoto(recs[0].id);$("h1").textContent="";$("h2").textContent="";$("date").value=today();
- stats();toast("Sale save ho gayi");window.scrollTo(0,0)};
+ stats();toast("Sale saved");window.scrollTo(0,0)};
 function stats(){$("sTotal").textContent=recs.length;var ym=today().slice(0,7);var mr=recs.filter(function(r){return(r.date||"").slice(0,7)===ym});$("sMonth").textContent=mr.length;var p=0;mr.forEach(function(r){if(r.buy&&r.price)p+=r.price-r.buy});$("sProfit").textContent="Rs "+p.toLocaleString("en-PK")}
 function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
-function render(){var q=$("q").value.trim().toLowerCase(),L=$("list");
- var rows=recs.filter(function(r){return!q||[r.imei1,r.imei2,r.model,r.cust,r.phone].join(" ").toLowerCase().indexOf(q)>-1});
- if(!rows.length){L.innerHTML='<div class="empty">'+(recs.length?"Koi record nahi mila":"Abhi koi sale save nahi hui. Add sale tab se shuru karein.")+"</div>";return}
+function render(){var q=$("q").value.trim().toLowerCase(),L=$("list");pager(q);
+ var rows=recs.filter(function(r){return q?[r.imei1,r.imei2,r.model,r.cust,r.phone].join(" ").toLowerCase().indexOf(q)>-1:(r.date||"").slice(0,7)===viewM});
+ if(!rows.length){L.innerHTML='<div class="empty">'+(q?"No records found":recs.length?"No sales in this month. Swipe to see other months.":"No sales saved yet. Start from the Add sale tab.")+"</div>";return}
  L.innerHTML=rows.map(function(r){return'<div class="card item" data-id="'+r.id+'"><div class="av" style="background:hsl('+hue(r.model)+' 65% 48%)">'+esc(r.model.charAt(0).toUpperCase())+'</div><div class="mid"><div class="top"><span>'+esc(r.model)+'</span><span class="pr">'+(r.price?"Rs "+Number(r.price).toLocaleString("en-PK"):"")+'</span></div><div class="sub">'+esc(r.imei1)+" · "+esc(r.date)+'</div></div><div class="detail">'+(r.photo?'<img class="ph" data-id="'+r.id+'" alt="Phone photo">':"")+(r.imei2?"<p>IMEI 2: "+esc(r.imei2)+"</p>":"")+(r.buy&&r.price?"<p>Profit: Rs "+(r.price-r.buy).toLocaleString("en-PK")+"</p>":"")+(r.cust?"<p>Customer: "+esc(r.cust)+"</p>":"")+(r.phone?"<p>Phone: "+esc(r.phone)+"</p>":"")+(r.notes?"<p>Notes: "+esc(r.notes)+"</p>":"")+'<button class="rcp" data-id="'+r.id+'" type="button" style="margin:8px 8px 0 0">Print receipt</button><button class="slip" data-id="'+r.id+'" type="button" style="margin:8px 8px 0 0">Share slip</button><button class="bad del" data-id="'+r.id+'" type="button" style="margin-top:8px">Delete</button></div></div>'}).join("")}
 $("q").oninput=render;
 $("list").onclick=function(e){var rc=e.target.closest(".rcp");if(rc){receipt(rc.dataset.id);return}var sl=e.target.closest(".slip");if(sl){slip(sl.dataset.id);return}var del=e.target.closest(".del");
- if(del){if(del.dataset.arm){cDel(del.dataset.id);pDel(del.dataset.id);recs=recs.filter(function(r){return r.id!==del.dataset.id});persist();stats();render();toast("Delete ho gaya")}else{del.dataset.arm="1";del.textContent="Dobara tap karein, pakka delete"}return}
+ if(del){if(del.dataset.arm){cDel(del.dataset.id);pDel(del.dataset.id);recs=recs.filter(function(r){return r.id!==del.dataset.id});persist();stats();render();toast("Deleted")}else{del.dataset.arm="1";del.textContent="Tap again to delete"}return}
  var it=e.target.closest(".item");if(it){it.classList.toggle("open");var im=it.querySelector(".ph");if(im&&!im.src)pGet(im.dataset.id).then(function(d){if(d)im.src=d}).catch(function(){})}};
-$("bkMake").onclick=function(){var t=JSON.stringify(recs);$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Backup copy ho gaya":"Text select hai, long-press karke copy karein")};
-$("bkRestore").onclick=function(){try{var inc=JSON.parse($("bk").value);if(!Array.isArray(inc))throw 0;var n=0;inc.forEach(function(r){if(r&&r.imei1&&!find(r.imei1)){recs.push(r);cSet(r);n++}});recs.sort(function(x,y){return(y.date||"").localeCompare(x.date||"")});persist();stats();render();toast(n+" records restore hue")}catch(e){toast("Backup text sahi nahi hai")}};
-function slip(id){var r=recs.filter(function(x){return x.id===id})[0];if(!r)return;var shop=$("shop").value.trim()||"Sale slip";
- var t=shop+"\nDate: "+r.date+"\nModel: "+r.model+"\nIMEI: "+r.imei1+(r.imei2?"\nIMEI 2: "+r.imei2:"")+(r.price?"\nPrice: Rs "+Number(r.price).toLocaleString("en-PK"):"")+(r.cust?"\nCustomer: "+r.cust:"")+(r.notes?"\nWarranty/Notes: "+r.notes:"")+"\nShukriya!";
- if(navigator.share){navigator.share({text:t}).catch(function(){})}else{$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Slip copy ho gayi, WhatsApp mein paste karein":"Slip neeche text box mein hai, copy kar lein")}}
+$("bkMake").onclick=function(){var t=JSON.stringify(recs);$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Backup copied":"Text is selected. Long-press to copy")};
+$("bkRestore").onclick=function(){try{var inc=JSON.parse($("bk").value);if(!Array.isArray(inc))throw 0;var n=0;inc.forEach(function(r){if(r&&r.imei1&&!find(r.imei1)){recs.push(r);cSet(r);n++}});recs.sort(function(x,y){return(y.date||"").localeCompare(x.date||"")});persist();stats();render();toast(n+" records restored")}catch(e){toast("That backup text is not valid")}};
+function slip(id){var r=recs.filter(function(x){return x.id===id})[0];if(!r)return;var shop=$("shop").value.trim()||T("Sale slip");
+ var L=function(k,v){return v?"\n"+T(k)+": "+v:""};
+ var t=shop+L("Date",r.date)+L("Model",r.model)+L("IMEI",r.imei1)+L("IMEI 2",r.imei2)+L("Price",r.price?"Rs "+Number(r.price).toLocaleString("en-PK"):"")+L("Customer",r.cust)+L("Warranty/Notes",r.notes)+"\n"+T("Thank you!");
+ if(navigator.share){navigator.share({text:t}).catch(function(){})}else{$("bk").value=t;$("bk").select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}toast(ok?"Slip copied. Paste it in WhatsApp":"The slip is in the text box. Copy it")}}
 /* scanner */
 var stream=null,timer=null,target=null,last="",seen=0,busy=false,track=null,torchOn=false,cv=document.createElement("canvas");
 function stopCam(){clearInterval(timer);timer=null;busy=false;if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}track=null;torchOn=false;$("cam").style.display="none"}
@@ -219,15 +224,15 @@ $("camType").onclick=function(){var id=target;stopCam();$(id).focus()};
 $("torch").onclick=function(){if(!track)return;torchOn=!torchOn;track.applyConstraints({advanced:[{torch:torchOn}]}).catch(function(){});$("torch").textContent=torchOn?"Torch off":"Torch on"};
 document.querySelectorAll("[data-scan]").forEach(function(b){b.onclick=function(){openCam(b.dataset.scan)}});
 function openCam(id){target=id;
- if(!("BarcodeDetector" in window)||!navigator.mediaDevices){toast("Is browser mein scanner nahi hai. IMEI type karein");$(id).focus();return}
+ if(!("BarcodeDetector" in window)||!navigator.mediaDevices){toast("Scanner is not available in this browser. Type the IMEI");$(id).focus();return}
  navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",width:{ideal:1920},height:{ideal:1080}}}).then(function(s){
   stream=s;track=s.getVideoTracks()[0];var v=$("vid");v.srcObject=s;v.play();
   var cap=track.getCapabilities?track.getCapabilities():{};$("torch").style.display=cap.torch?"block":"none";$("torch").textContent="Torch on";
   try{if(cap.focusMode&&cap.focusMode.indexOf("continuous")>-1)track.applyConstraints({advanced:[{focusMode:"continuous"}]})}catch(e){}
-  last="";seen=0;msg("Barcode ko dibbe ke andar rakhein");$("cam").style.display="block";
+  last="";seen=0;msg("Keep the barcode inside the box");$("cam").style.display="block";
   var det;try{det=new BarcodeDetector({formats:["code_128","code_39","ean_13","itf","qr_code"]})}catch(e){det=new BarcodeDetector()}
   timer=setInterval(function(){tick(det)},220)
- }).catch(function(){toast("Camera allow nahi hua. IMEI type kar dein");$(id).focus()})}
+ }).catch(function(){toast("Camera permission was denied. Type the IMEI");$(id).focus()})}
 function tick(det){var v=$("vid");if(busy||!v.videoWidth)return;
  var fr=$("frame").getBoundingClientRect(),vr=v.getBoundingClientRect(),vw=v.videoWidth,vh=v.videoHeight;
  var s=Math.max(vr.width/vw,vr.height/vh),ox=(vr.width-vw*s)/2,oy=(vr.height-vh*s)/2,pad=12;
@@ -236,21 +241,41 @@ function tick(det){var v=$("vid");if(busy||!v.videoWidth)return;
  cv.width=sw;cv.height=sh;cv.getContext("2d").drawImage(v,sx,sy,sw,sh,0,0,sw,sh);
  det.detect(cv).then(function(c){busy=false;if(!c.length){seen=0;last="";return}
   var n=c[0].rawValue.replace(/\D/g,"");
-  if(n.length!==15){msg("Ye IMEI barcode nahi lagta ("+n.length+" digits). Doosra barcode try karein");seen=0;return}
+  if(n.length!==15){msg("This does not look like an IMEI barcode ("+n.length+" digits). Try another barcode");seen=0;return}
   if(n===last){seen++}else{last=n;seen=1}
-  if(seen>=2){$(target).value=n;check(target,target==="imei1"?"h1":"h2");msg("IMEI mil gayi: "+n,true);if(navigator.vibrate)navigator.vibrate(80);clearInterval(timer);setTimeout(stopCam,700)}
-  else msg("Padh raha hai, haath na hilayen")
+  if(seen>=2){$(target).value=n;check(target,target==="imei1"?"h1":"h2");msg("IMEI found: "+n,true);if(navigator.vibrate)navigator.vibrate(80);clearInterval(timer);setTimeout(stopCam,700)}
+  else msg("Reading, hold steady")
  }).catch(function(){busy=false})}
+var DICT={"This email is already registered. Sign in instead": "Ye email pehle se registered hai, Login karein", "Sign in or create an account": "Login karein ya naya account banayen", "Buying price (Rs), used for profit": "Kharid ki qeemat (Rs), munafe ke liye", "Accent color": "App ka rang", "Shop name": "Shop ka naam", "placeholder=\"Shop address\"": "placeholder=\"Shop ka address\"", "Make a backup, copy the text and save it in WhatsApp or Notes. On a new phone, paste it here and tap Restore.": "Backup banao, text copy karke WhatsApp ya Notes mein save kar lein. Phone change ho to yahan paste karke restore karein.", "placeholder=\"Backup text appears here\"": "placeholder=\"Backup text yahan aayega\"", "Without account (this phone only)": "Bina login (sirf is phone mein)", "Sign in": "Login karein", "Not signed in": "Login nahi hai", "Old data": "Purana data", "Upload to this account": "Is account mein upload karein", "Your shop’s sales, on any phone": "Apni shop ka hisaab, har phone par", "Connecting...": "Connect ho raha hai...", "Keep the barcode inside the box": "Barcode ko dibbe ke andar rakhein", "Hold the phone 10 to 15 cm away. Keep the barcode straight and sharp. Use the torch in low light.": "Phone 10 se 15 cm door rakhein. Barcode seedha aur saaf ho, roshni kam ho to Torch on karein.", "Could not save. Please make a backup": "Save nahi hua, backup bana lein", "This IMEI is already sold: ": "Ye IMEI pehle sold hai: ", "15 digits, but the IMEI check failed. Please double-check.": "15 digits, lekin IMEI check match nahi hua. Dobara dekh lein.", "IMEI looks valid": "IMEI sahi lag raha hai", "IMEI 1 must be 15 digits": "IMEI 1 poora 15 digits ka hona chahiye", "IMEI 2 must be 15 digits or empty": "IMEI 2 15 digits ka ho ya khali chhor dein", "Enter the model": "Model likhein", "This IMEI is already saved: ": "Ye IMEI pehle save hai: ", "Sale saved": "Sale save ho gayi", "No sales saved yet. Start from the Add sale tab.": "Abhi koi sale save nahi hui. Add sale tab se shuru karein.", "No records found": "Koi record nahi mila", "Deleted": "Delete ho gaya", "Tap again to delete": "Dobara tap karein, pakka delete", "Text is selected. Long-press to copy": "Text select hai, long-press karke copy karein", "Backup copied": "Backup copy ho gaya", "records restored": "records restore hue", "That backup text is not valid": "Backup text sahi nahi hai", "Slip copied. Paste it in WhatsApp": "Slip copy ho gayi, WhatsApp mein paste karein", "The slip is in the text box. Copy it": "Slip neeche text box mein hai, copy kar lein", "Scanner is not available in this browser. Type the IMEI": "Is browser mein scanner nahi hai. IMEI type karein", "Camera permission was denied. Type the IMEI": "Camera allow nahi hua. IMEI type kar dein", "This does not look like an IMEI barcode (": "Ye IMEI barcode nahi lagta (", " digits). Try another barcode": " digits). Doosra barcode try karein", "Reading, hold steady": "Padh raha hai, haath na hilayen", "IMEI found: ": "IMEI mil gayi: ", "Photo could not be saved": "Photo save nahi hui", "Thank you for your purchase!": "Shukriya! Dobara tashreef layein.", "Thank you!": "Shukriya!", "This phone has ": "Is phone par ", " old records saved without an account. Upload them only if they belong to this account’s shop.": " purane records hain (bina login wale). Sirf tab upload karein jab ye isi account ki shop ke hain.", " records are uploading": " records upload ho rahe hain", "Failed (": "Nahi hua (", "Still connecting, please wait": "Abhi connect ho raha hai, thora ruken", "Enter your email": "Email likhein", "Enter your password": "Password likhein", "Reset link sent to your email. Check spam too.": "Reset link email par bhej diya. Spam folder bhi dekh lein.", "Could not connect. Open the app again, or continue without an account below.": "Internet ya Firebase se connection nahi bana. Dobara kholen, ya neeche Bina login chunen.", "Wrong email or password": "Email ya password galat hai", "Password must be at least 6 characters": "Password kam az kam 6 characters ka rakhein", "Enter a valid email": "Email sahi likhein", "Check your internet": "Internet check karein", "Cloud save failed": "Cloud save nahi hua", "Could not load cloud data": "Cloud se data nahi aa raha", "First enter your shop name and address": "Pehle apni shop ka naam aur address likhein", "Total sold": "Kul bikri", "This month": "Is mahine", "Month profit": "Mahine ka munafa", "Used phone sales ledger": "Used phone bikri ka register", "IMEI 2 (optional)": "IMEI 2 (zaroori nahi)", "Phone photo (optional)": "Phone ki photo (zaroori nahi)", "Add photo": "Photo lagayen", "Change photo": "Photo badlein", "Remove": "Hatayen", "Price": "Qeemat", "Sale price (Rs)": "Bikri ki qeemat (Rs)", "Customer and notes": "Customer aur notes", "Customer name": "Customer ka naam", "Customer phone": "Customer ka phone", "Date": "Tarikh", "Save sale": "Sale save karein", "Search IMEI, model, customer, phone": "IMEI, model, customer ya phone dhoondhein", "Search results": "Talash ke nateejay", "sold": "bike", "sales": "bikri", "profit": "munafa", "Print receipt": "Receipt print karein", "Share slip": "Slip bhejein", "Profit: Rs ": "Munafa: Rs ", "Add sale": "Sale darj karein", "Light": "Light (roshan)", "Dark": "Dark (andhera)", "Language": "Zabaan", "Shop address": "Shop ka address", "Shop phone": "Shop ka phone", "Make backup": "Backup banayen", "Restore": "Restore karein", "Torch on": "Torch on karein", "Torch off": "Torch off karein", "No sales in this month. Swipe to see other months.": "Is mahine koi sale nahi hui. Doosre mahine dekhne ke liye swipe karein.", "Sale slip": "Sale slip", "IMEI 2: ": "IMEI 2: ", "Customer: ": "Customer: ", "Phone: ": "Phone: ", "Notes: ": "Notes: "},LONG=Object.keys(DICT).filter(function(k){return k.length>=10}).sort(function(a,b){return b.length-a.length}),PRE=["IMEI 2: ","Customer: ","Phone: ","Notes: ","Profit: Rs "],LANG="en";
+function tt(s){var c=s.trim();if(!c)return s;if(DICT[c]!==undefined)return s.replace(c,function(){return DICT[c]});for(var i=0;i<PRE.length;i++){if(c.indexOf(PRE[i])===0)return s.replace(PRE[i],function(){return DICT[PRE[i]]})}var o=s;for(var j=0;j<LONG.length;j++){if(o.indexOf(LONG[j])>-1)o=o.split(LONG[j]).join(DICT[LONG[j]])}return o}
+function T(s){return LANG==="ru"?tt(s):s}
+function tr(n){if(n.nodeType===3){if(n.__en===undefined)n.__en=n.nodeValue;var v=LANG==="ru"?tt(n.__en):n.__en;if(n.nodeValue!==v)n.nodeValue=v;return}if(n.nodeType!==1||/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.tagName))return;
+ ["placeholder","aria-label"].forEach(function(a){if(n.hasAttribute(a)){var k="_en_"+a;if(n[k]===undefined)n[k]=n.getAttribute(a);var v=LANG==="ru"?tt(n[k]):n[k];if(n.getAttribute(a)!==v)n.setAttribute(a,v)}});
+ for(var c=n.firstChild;c;c=c.nextSibling)tr(c)}
+new MutationObserver(function(ml){ml.forEach(function(m){m.addedNodes.forEach(tr)})}).observe(document.body,{childList:true,subtree:true});
+/* months */
+var viewM=today().slice(0,7);
+function mShift(m,d){var t=new Date(+m.slice(0,4),+m.slice(5)-1+d,1);return t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")}
+function mBounds(){var ms=recs.map(function(r){return(r.date||"").slice(0,7)}).filter(Boolean).concat([today().slice(0,7)]).sort();return[ms[0],ms[ms.length-1]]}
+function pager(q){var b=mBounds();
+ $("mTitle").textContent=q?T("Search results"):new Date(+viewM.slice(0,4),+viewM.slice(5)-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+ $("mPrev").disabled=!!q||viewM<=b[0];$("mNext").disabled=!!q||viewM>=b[1];
+ var mr=recs.filter(function(r){return(r.date||"").slice(0,7)===viewM}),sales=0,pr=0;mr.forEach(function(r){if(r.price)sales+=+r.price;if(r.price&&r.buy)pr+=r.price-r.buy});
+ $("mSum").textContent=q?"":mr.length+" "+T("sold")+" · Rs "+sales.toLocaleString("en-PK")+" "+T("sales")+" · Rs "+pr.toLocaleString("en-PK")+" "+T("profit")}
+function go(d){if($("q").value.trim())return;var b=mBounds(),n=mShift(viewM,d);if(n<b[0]||n>b[1])return;viewM=n;var L=$("list");L.classList.remove("sl","sr");void L.offsetWidth;L.classList.add(d>0?"sl":"sr");render()}
+$("mPrev").onclick=function(){go(-1)};$("mNext").onclick=function(){go(1)};
+var tx=0,ty=0;$("vList").addEventListener("touchstart",function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+$("vList").addEventListener("touchend",function(e){if(/INPUT|TEXTAREA/.test(e.target.tagName))return;var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;if(Math.abs(dx)>60&&Math.abs(dx)>1.5*Math.abs(dy))go(dx<0?1:-1)},{passive:true});
 /* settings */
-var ST={theme:"auto",acc:"violet"};try{ST=Object.assign(ST,JSON.parse(localStorage.getItem("settings_v1")||"{}"))}catch(e){}
+var ST={theme:"auto",acc:"violet",lang:"en"};try{ST=Object.assign(ST,JSON.parse(localStorage.getItem("settings_v1")||"{}"))}catch(e){}
 var ACC={violet:["#6a4cff","#9b6bff","#5b3df5","#9b5cff","#ff6fb1"],teal:["#0b8f84","#2cc4a8","#0b7a8f","#14b8a6","#7ddc8a"],orange:["#d9480f","#ff9f43","#d9480f","#ff8a3d","#ffd166"],pink:["#c2255c","#ff6fa8","#c2255c","#f06595","#ffa8a8"],blue:["#1c7ed6","#4dabf7","#1864ab","#339af0","#74c0fc"]};
 function applySt(){var r=document.documentElement;if(ST.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",ST.theme);
  var a=ACC[ST.acc]||ACC.violet;["--p","--p2","--g1","--g2","--g3"].forEach(function(k,i){r.style.setProperty(k,a[i])});
  document.querySelectorAll("[data-theme-set]").forEach(function(b){b.classList.toggle("on",b.dataset.themeSet===ST.theme)});
- document.querySelectorAll("[data-acc]").forEach(function(b){b.classList.toggle("on",b.dataset.acc===ST.acc)})}
+ document.querySelectorAll("[data-acc]").forEach(function(b){b.classList.toggle("on",b.dataset.acc===ST.acc)});LANG=ST.lang==="ru"?"ru":"en";document.querySelectorAll("[data-lang]").forEach(function(b){b.classList.toggle("on",b.dataset.lang===LANG)});document.documentElement.lang=LANG==="ru"?"ur-Latn":"en";tr(document.body);if($("vList").classList.contains("on"))render()}
 function saveSt(){try{localStorage.setItem("settings_v1",JSON.stringify(ST))}catch(e){}applySt()}
 document.querySelectorAll("[data-theme-set]").forEach(function(b){b.onclick=function(){ST.theme=b.dataset.themeSet;saveSt()}});
-document.querySelectorAll("[data-acc]").forEach(function(b){b.onclick=function(){ST.acc=b.dataset.acc;saveSt()}});
+document.querySelectorAll("[data-acc]").forEach(function(b){b.onclick=function(){ST.acc=b.dataset.acc;saveSt()}});document.querySelectorAll("[data-lang]").forEach(function(b){b.onclick=function(){ST.lang=b.dataset.lang;saveSt()}});
 applySt();
 /* photos */
 var curPhoto="";
@@ -265,12 +290,12 @@ function shrink(f,cb){var fr=new FileReader();fr.onload=function(){var im=new Im
 $("photoBtn").onclick=function(){$("photoIn").click()};
 $("photoIn").onchange=function(){var f=this.files[0];if(!f)return;shrink(f,function(d){curPhoto=d;$("pv").src=d;$("pv").style.display="block";$("photoX").style.display="block";$("photoBtn").textContent="Change photo"})};
 $("photoX").onclick=function(){curPhoto="";$("pv").style.display="none";$("photoX").style.display="none";$("photoBtn").textContent="Add photo";$("photoIn").value=""};
-function savePhoto(id){if(curPhoto){pPut(id,curPhoto).catch(function(){toast("Photo save nahi hui")})}$("photoX").onclick()}
+function savePhoto(id){if(curPhoto){pPut(id,curPhoto).catch(function(){toast("Photo could not be saved")})}$("photoX").onclick()}
 /* cloud */
 var CLOUD=false,FB=null,uid=null,unsub=null,LEG=[],pt=null;
 var CFG={apiKey:"AIzaSyBPEqS41BGgMEvIdmhnHoXDWyd4e8w8hTc",authDomain:"sales-register-a9e5e.firebaseapp.com",projectId:"sales-register-a9e5e",storageBucket:"sales-register-a9e5e.firebasestorage.app",messagingSenderId:"655355442266",appId:"1:655355442266:web:87c18e7856e2edf20c5463"};
 var GU="https://www.gstatic.com/firebasejs/10.14.1/";
-function cSet(r){if(!CLOUD||!r)return;FB.F.setDoc(FB.F.doc(FB.db,"users",uid,"sales",r.id),r).catch(function(){toast("Cloud save nahi hua")})}
+function cSet(r){if(!CLOUD||!r)return;FB.F.setDoc(FB.F.doc(FB.db,"users",uid,"sales",r.id),r).catch(function(){toast("Cloud save failed")})}
 function cDel(id){if(!CLOUD)return;FB.F.deleteDoc(FB.F.doc(FB.db,"users",uid,"sales",id)).catch(function(){})}
 function brand(){$("tagline").textContent=$("shop").value.trim()||"Used phone sales ledger"}
 function profObj(){return{shop:$("shop").value.trim(),addr:$("addr").value.trim(),phone:$("sphone").value.trim()}}
@@ -280,31 +305,33 @@ function saveProf(){brand();var p=profObj();if(CLOUD){clearTimeout(pt);pt=setTim
 try{loadProf(JSON.parse(localStorage.getItem("shop_prof")||"{}"))}catch(e){}
 function receipt(id){var r=recs.filter(function(x){return x.id===id})[0];if(!r)return;var P=profObj();
  function row(k,v){return v?"<div class=\"rr\"><span>"+k+"</span><b>"+esc(v)+"</b></div>":""}
- $("rcpt").innerHTML="<h2>"+esc(P.shop||"Receipt")+"</h2><div class=\"ra\">"+esc(P.addr)+(P.phone?"<br>"+esc(P.phone):"")+"</div><hr>"+row("Date",r.date)+row("Model",r.model)+row("IMEI",r.imei1)+row("IMEI 2",r.imei2)+row("Price",r.price?"Rs "+Number(r.price).toLocaleString("en-PK"):"")+row("Customer",r.cust)+row("Customer phone",r.phone)+row("Warranty/Notes",r.notes)+"<hr><div class=\"ra\">Shukriya! Dobara tashreef layein.</div>";
+ $("rcpt").innerHTML="<h2>"+esc(P.shop||"Receipt")+"</h2><div class=\"ra\">"+esc(P.addr)+(P.phone?"<br>"+esc(P.phone):"")+"</div><hr>"+row("Date",r.date)+row("Model",r.model)+row("IMEI",r.imei1)+row("IMEI 2",r.imei2)+row("Price",r.price?"Rs "+Number(r.price).toLocaleString("en-PK"):"")+row("Customer",r.cust)+row("Customer phone",r.phone)+row("Warranty/Notes",r.notes)+"<hr><div class=\"ra\">Thank you for your purchase!</div>";
  setTimeout(function(){window.print()},120)}
-function sub(){unsub=FB.F.onSnapshot(FB.F.collection(FB.db,"users",uid,"sales"),function(s){recs=s.docs.map(function(d){return d.data()}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||(b.ts||0)-(a.ts||0)});stats();if($("vList").classList.contains("on"))render()},function(){toast("Cloud se data nahi aa raha")})}
+function sub(){unsub=FB.F.onSnapshot(FB.F.collection(FB.db,"users",uid,"sales"),function(s){recs=s.docs.map(function(d){return d.data()}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||(b.ts||0)-(a.ts||0)});stats();if($("vList").classList.contains("on"))render()},function(){toast("Could not load cloud data")})}
 function amsg(m,bad){$("amsg").textContent=m;$("amsg").className="hint"+(bad?" err":"")}
 function onUser(u){
  if(unsub){unsub();unsub=null}
- if(!u){CLOUD=false;uid=null;recs=[];stats();$("auth").style.display="flex";amsg("Login karein ya naya account banayen");$("acc").textContent="Login nahi hai";$("bOut").textContent="Login karein";return}
+ if(!u){CLOUD=false;uid=null;recs=[];stats();$("auth").style.display="flex";amsg("Sign in or create an account");$("acc").textContent="Not signed in";$("bOut").textContent="Sign in";return}
  uid=u.uid;CLOUD=true;try{LEG=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){LEG=[]}
  recs=[];stats();$("auth").style.display="none";$("pw").value="";$("acc").textContent=u.email;$("bOut").textContent="Logout";
- var show=LEG.length&&localStorage.getItem("leg_done_"+uid)!=="1";$("legCard").style.display=show?"block":"none";$("legMsg").textContent="Is phone par "+LEG.length+" purane records hain (bina login wale). Sirf tab upload karein jab ye isi account ki shop ke hain.";
+ var show=LEG.length&&localStorage.getItem("leg_done_"+uid)!=="1";$("legCard").style.display=show?"block":"none";$("legMsg").textContent="This phone has "+LEG.length+" old records saved without an account. Upload them only if they belong to this account’s shop.";
  sub();
- FB.F.getDoc(FB.F.doc(FB.db,"users",uid,"meta","profile")).then(function(s){var p=s.exists()?s.data():{};loadProf(p);if(!p.shop){show("set");toast("Pehle apni shop ka naam aur address likhein")}}).catch(function(){})}
-function aerr(e){var c=(e&&e.code)||"";amsg(/invalid-credential|wrong-password|user-not-found/.test(c)?"Email ya password galat hai":/email-already/.test(c)?"Ye email pehle se registered hai, Login karein":/weak-password/.test(c)?"Password kam az kam 6 characters ka rakhein":/invalid-email/.test(c)?"Email sahi likhein":/network/.test(c)?"Internet check karein":"Nahi hua ("+c+")",true)}
-function cred(){if(!FB){amsg("Abhi connect ho raha hai, thora ruken",true);return null}var e=$("em").value.trim(),w=$("pw").value;return e?{e:e,w:w}:(amsg("Email likhein",true),null)}
-$("bLogin").onclick=function(){var c=cred();if(!c)return;if(!c.w){amsg("Password likhein",true);return}FB.A.signInWithEmailAndPassword(FB.auth,c.e,c.w).catch(aerr)};
-$("bSign").onclick=function(){var c=cred();if(!c)return;if(!c.w){amsg("Password likhein",true);return}FB.A.createUserWithEmailAndPassword(FB.auth,c.e,c.w).catch(aerr)};
-$("bReset").onclick=function(){var c=cred();if(!c)return;FB.A.sendPasswordResetEmail(FB.auth,c.e).then(function(){amsg("Reset link email par bhej diya. Spam folder bhi dekh lein.")}).catch(aerr)};
+ FB.F.getDoc(FB.F.doc(FB.db,"users",uid,"meta","profile")).then(function(s){var p=s.exists()?s.data():{};loadProf(p);if(!p.shop){show("set");toast("First enter your shop name and address")}}).catch(function(){})}
+function aerr(e){var c=(e&&e.code)||"";amsg(/invalid-credential|wrong-password|user-not-found/.test(c)?"Wrong email or password":/email-already/.test(c)?"This email is already registered. Sign in instead":/weak-password/.test(c)?"Password must be at least 6 characters":/invalid-email/.test(c)?"Enter a valid email":/network/.test(c)?"Check your internet":"Failed ("+c+")",true)}
+function cred(){if(!FB){amsg("Still connecting, please wait",true);return null}var e=$("em").value.trim(),w=$("pw").value;return e?{e:e,w:w}:(amsg("Enter your email",true),null)}
+$("bLogin").onclick=function(){var c=cred();if(!c)return;if(!c.w){amsg("Enter your password",true);return}FB.A.signInWithEmailAndPassword(FB.auth,c.e,c.w).catch(aerr)};
+$("bSign").onclick=function(){var c=cred();if(!c)return;if(!c.w){amsg("Enter your password",true);return}FB.A.createUserWithEmailAndPassword(FB.auth,c.e,c.w).catch(aerr)};
+$("bReset").onclick=function(){var c=cred();if(!c)return;FB.A.sendPasswordResetEmail(FB.auth,c.e).then(function(){amsg("Reset link sent to your email. Check spam too.")}).catch(aerr)};
 $("bLocal").onclick=function(){CLOUD=false;$("auth").style.display="none"};
 $("bOut").onclick=function(){if(CLOUD&&FB){FB.A.signOut(FB.auth)}else{$("auth").style.display="flex"}};
-$("bLeg").onclick=function(){var n=0;LEG.forEach(function(r){if(!r||!r.id)return;n++;cSet(r);if(r.photo)lGet(r.id).then(function(d){if(d)pPut(r.id,d)}).catch(function(){})});try{localStorage.setItem("leg_done_"+uid,"1")}catch(e){}$("legCard").style.display="none";toast(n+" records upload ho rahe hain")};
+$("bLeg").onclick=function(){var n=0;LEG.forEach(function(r){if(!r||!r.id)return;n++;cSet(r);if(r.photo)lGet(r.id).then(function(d){if(d)pPut(r.id,d)}).catch(function(){})});try{localStorage.setItem("leg_done_"+uid,"1")}catch(e){}$("legCard").style.display="none";toast(n+" records are uploading")};
+var EYE="<path d=\"M1.5 12s4-7 10.5-7 10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>";
+$("pwEye").onclick=function(){var p=$("pw"),s=p.type==="password";p.type=s?"text":"password";this.firstElementChild.innerHTML=s?EYE+"<path d=\"M3 3l18 18\"/>":EYE;this.setAttribute("aria-label",s?"Hide password":"Show password")};
 Promise.all([import(GU+"firebase-app.js"),import(GU+"firebase-auth.js"),import(GU+"firebase-firestore.js")]).then(function(m){
  var app=m[0].initializeApp(CFG),A=m[1],F=m[2],db;
  try{db=F.initializeFirestore(app,{localCache:F.persistentLocalCache({tabManager:F.persistentMultipleTabManager()})})}catch(e){db=F.getFirestore(app)}
  FB={A:A,F:F,auth:A.getAuth(app),db:db};A.onAuthStateChanged(FB.auth,onUser)
-}).catch(function(){amsg("Internet ya Firebase se connection nahi bana. Dobara kholen, ya neeche Bina login chunen.",true)});
+}).catch(function(){amsg("Could not connect. Open the app again, or continue without an account below.",true)});
 stats();
 })();
 </script>
